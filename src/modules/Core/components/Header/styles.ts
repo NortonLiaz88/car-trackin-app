@@ -9,8 +9,6 @@ export const HeaderWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-
-  padding-bottom: ${hp(2)}px;
   padding: 0px ${wp(4)}px ${hp(2)}px ${wp(4)}px;
   height: ${hp(15)}px;
   background-color: ${({theme}) => theme.colors.header};

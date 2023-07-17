@@ -8,5 +8,4 @@ export const PageWrapper = styled.ScrollView`
   flex: 1;
   padding: ${wp(4)}px;
   background-color: ${({theme}) => theme.colors.background};
-  min-height: ${hp(20)}px;
 `;
