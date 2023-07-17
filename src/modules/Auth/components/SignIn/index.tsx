@@ -26,7 +26,7 @@ export const SignInForm: React.FC = () => {
       await onSubmit();
     } catch (err) {
       console.log('ERROR', err);
-      toast.show('Erro ao realizar autenticação.', {
+      toast.show(strings.signIn.error.unauthorized, {
         type: 'danger',
         placement: 'bottom',
       });

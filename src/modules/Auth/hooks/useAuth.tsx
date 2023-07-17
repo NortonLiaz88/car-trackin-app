@@ -1,3 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useCallback,
+  useEffect,
+} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as yup from 'yup';
 import {
@@ -8,21 +16,15 @@ import {
   useForm,
 } from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useToast} from 'react-native-toast-notifications';
 
-import React, {
-  createContext,
-  useState,
-  useContext,
-  useCallback,
-  useEffect,
-} from 'react';
 import api from '../../../services/api';
 import {login} from '../../../services/login';
-import {useToast} from 'react-native-toast-notifications';
 import {User} from '../../../models/User';
 import {LoginRequest} from '../../../models/Login';
 import {Session} from '../models/session';
 import {StorageToken} from '../models/storageToken';
+import {strings} from '../../../values/strings';
 
 interface AuthContextData {
   user: User;
@@ -84,28 +86,29 @@ function AuthProvider({children}: AuthProviderProps) {
 
   const toast = useToast();
 
-  const updateToken = useCallback(async ({access_token}: StorageToken) => {
-    setToken(access_token);
-    await AsyncStorage.setItem('@carTracking:token', access_token);
+  const updateToken = useCallback(async ({accessToken}: StorageToken) => {
+    setToken(accessToken);
+    await AsyncStorage.setItem('@carTracking:token', accessToken);
   }, []);
 
   const signIn = useCallback(async ({email, password}: LoginRequest) => {
     try {
       setLoading(true);
       const newAuthState = await login({email, password});
-      console
+      console.log('New AUTH STATE', newAuthState);
       updateToken({
-        access_token: newAuthState.access_token,
+        accessToken: newAuthState.accessToken,
       });
-      api.defaults.headers.Authorization = `Bearer ${newAuthState.access_token}`;
+      api.defaults.headers.Authorization = `Bearer ${newAuthState.accessToken}`;
 
       setSession(newAuthState);
       setLoading(false);
       reset();
+
       return newAuthState;
     } catch (err) {
       console.log('ERROR');
-      toast.show('Erro ao realizar autenticação', {
+      toast.show(strings.signIn.error.unauthorized, {
         placement: 'bottom',
         type: 'error',
       });

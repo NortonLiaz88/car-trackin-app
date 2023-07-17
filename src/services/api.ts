@@ -23,8 +23,8 @@ api.interceptors.response.use(
     return response;
   },
   async error => {
-    const access_token = await AsyncStorage.getItem('@carTracking:token');
-    if (error?.response?.status === 401 && access_token) {
+    const accessToken = await AsyncStorage.getItem('@carTracking:token');
+    if (error?.response?.status === 401 && accessToken) {
       AsyncStorage.removeItem('@carTracking:token');
     }
     return Promise.reject(error);

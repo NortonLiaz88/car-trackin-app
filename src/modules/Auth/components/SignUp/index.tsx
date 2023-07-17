@@ -22,8 +22,7 @@ export const SignUpForm: React.FC = () => {
       setSubmittingForm(true);
       await onSubmit();
     } catch (err) {
-      console.log('ERROR', err);
-      toast.show('Erro ao realizar autenticação.', {
+      toast.show(strings.signUp.error.unauthorized, {
         type: 'danger',
         placement: 'bottom',
       });

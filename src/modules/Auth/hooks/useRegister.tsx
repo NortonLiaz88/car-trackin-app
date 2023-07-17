@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as yup from 'yup';
 import {
   Control,
@@ -13,6 +14,7 @@ import {Session} from '../models/session';
 import {useToast} from 'react-native-toast-notifications';
 import {UserRegister} from '../models/register';
 import {register} from '../../../services/login';
+import {strings} from '../../../values/strings';
 
 interface UserContextData {
   user: UserRegister;
@@ -77,7 +79,7 @@ function UserProvider({children}: UserProviderProps) {
         return newAuthState;
       } catch (err) {
         console.log('ERROR');
-        toast.show('Erro ao realizar autenticação', {
+        toast.show(strings.signUp.error.unauthorized, {
           placement: 'bottom',
           type: 'error',
         });
@@ -98,7 +100,6 @@ function UserProvider({children}: UserProviderProps) {
 
   return (
     <UserContext.Provider
-      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         handleRegister,
         user: currentUser,
@@ -106,7 +107,6 @@ function UserProvider({children}: UserProviderProps) {
         errors,
         isValid,
         loading,
-
         onSubmit,
         setValue,
         getValues,

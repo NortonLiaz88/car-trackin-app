@@ -1,10 +1,11 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Home} from '../screens/Home';
+import {CarRegister} from '../screens/CarRegister';
 
 export type RootStackParamList = {
   Home: undefined;
-  SignUp: undefined;
+  CarRegister: undefined;
   Splash: undefined;
 };
 
@@ -16,6 +17,13 @@ export const AppStackRoutes = (): JSX.Element => {
       <Screen
         name="Home"
         component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Screen
+        name="CarRegister"
+        component={CarRegister}
         options={{
           headerShown: false,
         }}

@@ -2,12 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 
 const updateSessionData = async (
-  access_token: string,
+  accessToken: string,
   refresh_token: string,
 ) => {
-  await AsyncStorage.setItem('@carTracking:token', access_token);
+  await AsyncStorage.setItem('@carTracking:token', accessToken);
   await AsyncStorage.setItem('@carTracking:refreshToken', refresh_token);
-  api.defaults.headers.Authorization = `Bearer ${access_token}`;
+  api.defaults.headers.Authorization = `Bearer ${accessToken}`;
 };
 
 // eslint-disable-next-line consistent-return
