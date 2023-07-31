@@ -9,8 +9,14 @@ import {useCarRegister} from '../../hooks/useCar';
 import {Controller} from 'react-hook-form';
 
 export const CarRegisterForm: React.FC = () => {
-  const [submittingForm] = useState(false);
-  const {control, errors} = useCarRegister();
+  const [submittingForm, setSubmitting] = useState(false);
+  const {control, errors, onSubmit} = useCarRegister();
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    await onSubmit();
+    setSubmitting(false);
+  };
 
   return (
     <View>
@@ -65,7 +71,7 @@ export const CarRegisterForm: React.FC = () => {
             accessibilityLabel="button.car"
             text={strings.car.form.btnSignUp}
             type="success"
-            onPress={() => null}
+            onPress={() => handleSubmit()}
             loading={submittingForm}
           />
         </ButtonWrapper>

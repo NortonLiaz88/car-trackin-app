@@ -43,4 +43,20 @@ export const strings = {
       unauthorized: 'Erro ao cadastrar usuário.',
     },
   },
+  maintenance: {
+    header: 'Registro de manutenções',
+    form: {
+      mileageLabel: 'Quilometragem',
+      mileagePlaceholder: 'Adicione a quilometragem',
+      consumptionLabel: 'Consumo',
+      consumptionPlaceholder: 'Adicione a quilometragem',
+      maintenanceLabel: 'Tipo de manutenção',
+      maintenancePlaceholder: 'Preventiva/Corretiva',
+      localLabel: 'Local da manutenção',
+      localPlaceholder: 'Adicione o local que realizou a manutenção',
+      systemLabel: 'Sistema',
+      systemPlaceholder: 'Adicione o sistema.',
+      btnSignUp: 'Cadastrar',
+    },
+  },
 };

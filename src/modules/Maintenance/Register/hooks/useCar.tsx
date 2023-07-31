@@ -9,47 +9,54 @@ import {
   useForm,
 } from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {ICar} from '../models/createCar';
+import {ICreateCar} from '../models/createMaintenance';
 import api from '../../../../services/api';
 import {useToast} from 'react-native-toast-notifications';
 
-interface CarRegisterContextData {
-  control: Control<ICar, any>;
-  errors: FieldErrors<ICar>;
+interface MaintenanceRegisterContextData {
+  control: Control<ICreateCar, any>;
+  errors: FieldErrors<ICreateCar>;
   isValid: boolean;
 
-  getValues: UseFormGetValues<ICar>;
+  getValues: UseFormGetValues<ICreateCar>;
   onSubmit: (
     e?: React.BaseSyntheticEvent<object, any, any> | undefined,
   ) => Promise<void>;
-  setValue: UseFormSetValue<ICar>;
+  setValue: UseFormSetValue<ICreateCar>;
 }
 
 interface CarRegisterProviderProps {
   children: React.ReactNode;
 }
 
-const CarRegisterContext = createContext<CarRegisterContextData>(
-  {} as CarRegisterContextData,
-);
+const MaintenanceRegisterContext =
+  createContext<MaintenanceRegisterContextData>(
+    {} as MaintenanceRegisterContextData,
+  );
 
-function CarRegisterProvider({children}: CarRegisterProviderProps) {
+function MaintenanceRegisterProvider({children}: CarRegisterProviderProps) {
   const toast = useToast();
 
   const schema = yup.object().shape({
-    brand: yup
+    mileage: yup
+      .number()
+      .min(0, 'O valor mínimo para esse campo é 0.')
+      .required('Esse campo é obrigatório'),
+    consumption: yup
+      .number()
+      .min(0, 'O valor mínimo para esse campo é 0.')
+      .required('Esse campo é obrigatório'),
+    maintenance: yup
       .string()
       .min(3, 'Esse campo deve ter pelo menos 3 caracteres')
-      .max(52, 'Esse campo deve ter no máximo 52 caracteres')
-      .required('Esse campo é obrigatório'),
-    model: yup
+      .max(52, 'Esse campo deve ter no máximo 52 caracteres'),
+    system: yup
       .string()
-      .min(3, 'Esse campo deve ter pelo menos 6 caracteres')
-      .max(52, 'Esse campo deve ter no máximo 52 caracteres')
-      .required('Esse campo é obrigatório'),
-    surname: yup
+      .min(3, 'Esse campo deve ter pelo menos 3 caracteres')
+      .max(52, 'Esse campo deve ter no máximo 52 caracteres'),
+    local: yup
       .string()
-      .min(3, 'Esse campo deve ter pelo menos 6 caracteres')
+      .min(3, 'Esse campo deve ter pelo menos 3 caracteres')
       .max(52, 'Esse campo deve ter no máximo 52 caracteres'),
   });
 
@@ -60,7 +67,7 @@ function CarRegisterProvider({children}: CarRegisterProviderProps) {
     setValue,
     getValues,
     reset,
-  } = useForm<ICar>({
+  } = useForm<ICreateCar>({
     mode: 'all',
     resolver: yupResolver(schema),
   });
@@ -68,13 +75,14 @@ function CarRegisterProvider({children}: CarRegisterProviderProps) {
   const createCar = useCallback(async () => {
     try {
       const form = getValues();
-      const {data} = await api.post('/car', {...form});
+      const {data} = await api.post('/car-transactions', {...form});
       console.log('DATA', data);
-      toast.show('Carro criado com sucesso', {
+      toast.show('Manutenção registrada com sucesso.', {
         placement: 'bottom',
         type: 'success',
       });
     } catch (err) {
+      console.log('ERROR', err);
       throw new Error(JSON.stringify(err));
     }
   }, []);
@@ -91,7 +99,7 @@ function CarRegisterProvider({children}: CarRegisterProviderProps) {
   );
 
   return (
-    <CarRegisterContext.Provider
+    <MaintenanceRegisterContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         control,
@@ -103,13 +111,13 @@ function CarRegisterProvider({children}: CarRegisterProviderProps) {
         getValues,
       }}>
       {children}
-    </CarRegisterContext.Provider>
+    </MaintenanceRegisterContext.Provider>
   );
 }
 
-function useCarRegister(): CarRegisterContextData {
-  const context = useContext(CarRegisterContext);
+function useMaintenanceRegister(): MaintenanceRegisterContextData {
+  const context = useContext(MaintenanceRegisterContext);
   return context;
 }
 
-export {CarRegisterProvider, useCarRegister};
+export {MaintenanceRegisterProvider, useMaintenanceRegister};
